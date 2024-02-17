@@ -21,6 +21,90 @@ typedef struct {
 
 //Modules
 //FillText: Asks the user to enter the number of lines in his paragraph then enters each line individualy;
+void FillText(int *n, char text[][BUFFER]);
+
+//GetWords: Get the words from the lines;
+void GetWords(int n, char text[][BUFFER], Words Word[], int *cpt);
+
+//Display the extracted words
+void DisplayWords(int cpt, Words Word[]);
+
+
+//a structure to store only the unique words
+typedef struct {
+    char word[50];
+    int freq;
+} WordFreq;
+
+//Gives the frequency of each word and displays the most frequent 5 words;
+void FreqWords(Words Word[], int cpt);
+
+//Main
+int main(){
+
+    int n = 100; // it should be initialized with a maximum number of lines to avoid C bugs;
+    char text[n][BUFFER];
+    int cpt, choice;
+    Words Word[n];
+    bool e = false;
+    bool q1, q2, q3, q4;
+    do{
+        printf("\n---------------------------------------MENU---------------------------------------\n");
+        printf("1- Filling the text\n");
+        printf("2- Getting the words\n");
+        printf("3- Displaying the words\n");
+        printf("4- Displaying the most 5 frequent words with their coords\n");
+        printf("5- Exit\n");
+        printf("----------------------------------------------------------------------------------\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+            case 1:
+                q1 = true;
+                printf("----------------------------------Filling the text--------------------------------\n");
+                FillText(&n, text);
+                break;
+            case 2:
+                if(q1 == false){
+                    printf("Please process option 1 first!");
+                }
+                else{
+                    q2 = true;
+                    printf("---------------------------------Getting the words--------------------------------\n");
+                    GetWords(n, text, Word, &cpt);
+                    printf("---------------------------------------DONE---------------------------------------");
+                }
+                break;
+            case 3:
+                if (q1 == false || q2 == false){
+                    printf("Please process option 1 and 2 first!");
+                }
+                else{
+                    printf("------------------------------Displaying the words-------------------------------\n");
+                    DisplayWords(cpt, Word);
+                }
+                break;
+            case 4:
+                if (q1 == false || q2 == false){
+                    printf("Please process option 1 and 2 first!");
+                }
+                else{
+                    printf("---------------Displaying the most 5 frequent words with their coords-------------\n");
+                    FreqWords(Word, cpt);
+                }
+                break;
+            case 5:
+                printf("-------------------------------END OF THE PROGRAM-------------------------------------\n");
+                e = true;
+                break;
+            default:
+                printf("Error of choice ! Please enter a valid choice !");
+        }
+    }while(e == false);
+}
+
+//FillText: Asks the user to enter the number of lines in his paragraph then enters each line individualy;
 void FillText(int *n, char text[][BUFFER]){
     printf("Enter the number of lines: ");
     scanf("%d", n);
@@ -62,6 +146,7 @@ void GetWords(int n, char text[][BUFFER], Words Word[], int *cpt){
     *cpt = k;
 }
 
+//Display the extracted words
 void DisplayWords(int cpt, Words Word[]){
     for (int i = 0; i < cpt; i++){
         printf("Word: %s\n", Word[i].word);
@@ -70,12 +155,8 @@ void DisplayWords(int cpt, Words Word[]){
         printf("----------------------------------\n");
     }
 }
-//a structure to store only the unique words
-typedef struct {
-    char word[50];
-    int freq;
-} WordFreq;
 
+//Gives the frequency of each word and displays the most frequent 5 words;
 void FreqWords(Words Word[], int cpt){
     WordFreq wordFreqs[cpt];
     //counter for the unique words
@@ -142,69 +223,4 @@ void FreqWords(Words Word[], int cpt){
             count++;
         }
     }
-}
-
-//Main
-int main(){
-
-    int n = 100; // it should be initialized with a maximum number of lines to avoid C bugs;
-    char text[n][BUFFER];
-    int cpt, choice;
-    Words Word[n];
-    bool e = false;
-    bool q1, q2, q3, q4;
-    do{
-        printf("\n---------------------------------------MENU---------------------------------------\n");
-        printf("1- Filling the text\n");
-        printf("2- Getting the words\n");
-        printf("3- Displaying the words\n");
-        printf("4- Displaying the most 5 frequent words with their coords\n");
-        printf("5- Exit\n");
-        printf("----------------------------------------------------------------------------------\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
-        switch(choice){
-            case 1:
-                q1 = true;
-                printf("----------------------------------Filling the text--------------------------------\n");
-                FillText(&n, text);
-                break;
-            case 2:
-                if(q1 == false){
-                    printf("Please process option 1 first!");
-                }
-                else{
-                    q2 = true;
-                    printf("---------------------------------Getting the words--------------------------------\n");
-                    GetWords(n, text, Word, &cpt);
-                    printf("---------------------------------------DONE---------------------------------------");
-                }
-                break;
-            case 3:
-                if (q1 == false || q2 == false){
-                    printf("Please process option 1 and 2 first!");
-                }
-                else{
-                    printf("------------------------------Displaying the words-------------------------------\n");
-                    DisplayWords(cpt, Word);
-                }
-                break;
-            case 4:
-                if (q1 == false || q2 == false){
-                    printf("Please process option 1 and 2 first!");
-                }
-                else{
-                    printf("---------------Displaying the most 5 frequent words with their coords-------------\n");
-                    FreqWords(Word, cpt);
-                }
-                break;
-            case 5:
-                printf("-------------------------------END OF THE PROGRAM-------------------------------------\n");
-                e = true;
-                break;
-            default:
-                printf("Error of choice ! Please enter a valid choice !");
-        }
-    }while(e == false);
 }
